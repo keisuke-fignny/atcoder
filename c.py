@@ -1,68 +1,37 @@
-def count_up(idx_list, lv_list):
-#  print(idx_list, "の組み合わせのカウントアップ")
-  new_lv_list = []
-  for j in range(M):
-    each_total_lv = 0
-    for i in idx_list:
-      each_total_lv += lv_list[i][j]
-#      print(each_total_lv)
-      if(each_total_lv >= X):
-#        print(j, "番地の能力は達成")
-        break
-    if(each_total_lv < X):
-#      print(idx_list, "だと未達成。次")
-      return -1
-  
-  price = 0;
-  for a in idx_list:
-    price += prices[a]
-  
-#  print("idx_list=", idx_list, "金額は", price)
-  
-  return price
-    
-  
+import math
 
-from itertools import combinations
+A, B, H, M = map(int, input().split(' '))
 
-N,M,X = map(int, input().split(' '))
+#print(A, B, H, M)
 
-prices = []
-lv_ups = []
-max_price = 0
+# c²=a²+b²−2abcosΘ
 
-# i = 0から
-for i in range(N):
-  tmp = tuple(map(int, input().split(' ')))
-  max_price += tmp[0]
-  prices.append(tmp[0])
-  lv_ups.append(tmp[1:len(tmp)])
+# 角度さえ求まればいける
+# Aは1分で0.5度づつ
+# Bは1分で6度づつ
+# AとBのどっちが左側にあるかもポイント
 
-#print("最大金額=", max_price)
+angle_a = (H * 30) + (M * 0.5)
+angle_b = M * 6
 
-all_read = []
-complete = True
-for j in range(M):
-    each_total_lv = 0
-    for i in range(len(lv_ups)):
-      each_total_lv += lv_ups[i][j]
-    
-    if (each_total_lv < X):
-      complete = False
-    all_read.append(each_total_lv)
-    
-    
-# 判定
-if(complete):
-  for z in reversed(range(1, N)):
-    comb = combinations(range(N), z)
-    for e in comb:
-      counted_price = count_up(e, lv_ups)
-      if(counted_price > 0 and max_price > counted_price):
-        max_price = counted_price
-  
-  print(max_price)
-  
+#print("angle_a", angle_a)
+#print("angle_b", angle_b)
+
+cos = 0
+ret = 0
+
+if(angle_a == angle_b):
+  #print("ぴったり")
+  ret = abs(A - B)
 else:
-  print(-1)
+  if(angle_a > angle_b):
+    cos = math.cos(math.radians(angle_a - angle_b))
+    #print("時針のほうが先いってる", cos)
+  else:
+    cos = math.cos(math.radians(angle_b - angle_a))
+    #print("分針のほうが先いってる", cos)
+  
+  ret = math.sqrt(A**2 + B**2 - 2 * A * B * cos)
+
+print(ret)
 

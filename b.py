@@ -1,17 +1,10 @@
-A_1, B_0, C_minus1, K = map(int, input().split(' '))
+K = int(input())
+S = str(input())
 
-max_total = 0
+# print(K, S)
 
-if(K <= A_1):
-  max_total = K
-elif(K > A_1 and K <= (A_1 + B_0)):
-  max_total = A_1
+if(len(S) <= K):
+  print(S)
 else:
-  left = K - (A_1 + B_0)
-  if(left <= C_minus1):
-    max_total = A_1 - left
-  else:
-    max_total = A_1 - C_minus1
-  
-print(max_total)
+  print(S[:K] + "...")
 
